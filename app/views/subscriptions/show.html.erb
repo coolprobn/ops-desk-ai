@@ -1,0 +1,23 @@
+<% content_for :title, "#{@subscription.plan_name} · Ops Desk" %>
+
+<p class="text-xs uppercase tracking-wider text-zinc-500">Subscription</p>
+<h1 class="mt-1 text-2xl font-semibold tracking-tight text-zinc-50"><%= @subscription.plan_name %></h1>
+<p class="mt-2 text-sm text-zinc-400">
+  <%= link_to @subscription.customer.company, customer_path(@subscription.customer), class: "hover:text-zinc-200" %>
+  · <%= number_to_currency(@subscription.monthly_price_cents / 100.0) %>/mo
+  · <span class="capitalize"><%= @subscription.status %></span>
+</p>
+<dl class="mt-8 grid gap-4 sm:grid-cols-3">
+  <div class="rounded-lg border border-zinc-800 bg-zinc-900/40 px-4 py-3">
+    <dt class="text-xs uppercase tracking-wider text-zinc-500">Started</dt>
+    <dd class="mt-1 text-sm text-zinc-200"><%= l(@subscription.started_at, format: :short) %></dd>
+  </div>
+  <div class="rounded-lg border border-zinc-800 bg-zinc-900/40 px-4 py-3">
+    <dt class="text-xs uppercase tracking-wider text-zinc-500">Renewal</dt>
+    <dd class="mt-1 text-sm text-zinc-200"><%= l(@subscription.renewal_at, format: :short) %></dd>
+  </div>
+  <div class="rounded-lg border border-zinc-800 bg-zinc-900/40 px-4 py-3">
+    <dt class="text-xs uppercase tracking-wider text-zinc-500">Canceled</dt>
+    <dd class="mt-1 text-sm text-zinc-200"><%= @subscription.canceled_at ? l(@subscription.canceled_at, format: :short) : "—" %></dd>
+  </div>
+</dl>

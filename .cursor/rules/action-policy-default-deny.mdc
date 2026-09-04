@@ -1,0 +1,45 @@
+---
+description: ApplicationPolicy denies every REST action until a subclass opens one
+alwaysApply: true
+---
+
+# Action Policy default deny
+
+`ApplicationPolicy` defines the seven REST actions (`index`, `show`, `new`, `create`, `edit`, `update`, `destroy`) as `false`. Resource policies open only what they need. Do not leave those predicates undefined. Do not override `manage?` to true as a catch-all.
+
+```ruby
+# bad
+class ApplicationPolicy < ActionPolicy::Base
+  authorize :user
+  authorize :organization
+end
+
+def manage?
+  true
+end
+```
+
+```ruby
+# good
+class ApplicationPolicy < ActionPolicy::Base
+  def show?
+    false
+  end
+
+  def destroy?
+    false
+  end
+end
+
+class OrganizationOwnedPolicy < ApplicationPolicy
+  def index?
+    true
+  end
+
+  def show?
+    record.organization_id == organization.id
+  end
+end
+```
+
+Create, update, and destroy stay closed until a policy opens them. Do not add `verify_authorized` globally.

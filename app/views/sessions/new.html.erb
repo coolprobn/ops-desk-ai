@@ -1,0 +1,26 @@
+<% content_for :title, "Sign in · Ops Desk" %>
+
+<div class="rounded-lg border border-zinc-800 bg-zinc-900/60 p-8 shadow-xl shadow-black/40">
+  <p class="text-xs font-medium uppercase tracking-wider text-zinc-500">Ops Desk</p>
+  <h1 class="mt-2 text-2xl font-semibold text-zinc-50">Sign in</h1>
+
+  <%= form_with url: session_url, class: "mt-6 space-y-4" do |form| %>
+    <div>
+      <%= form.label :email_address, "Email", class: "block text-sm text-zinc-300" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username",
+            value: params[:email_address],
+            class: "mt-1 block w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-zinc-100 placeholder:text-zinc-600 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500" %>
+    </div>
+
+    <div>
+      <%= form.label :password, class: "block text-sm text-zinc-300" %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", maxlength: 72,
+            class: "mt-1 block w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-zinc-100 placeholder:text-zinc-600 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500" %>
+    </div>
+
+    <div class="flex items-center justify-between gap-4 pt-2">
+      <%= form.submit "Sign in", class: "cursor-pointer rounded-md bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-white" %>
+      <%= link_to "Forgot password?", new_password_path, class: "text-sm text-zinc-400 underline hover:text-zinc-200" %>
+    </div>
+  <% end %>
+</div>

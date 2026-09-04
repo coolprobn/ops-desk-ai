@@ -1,0 +1,12 @@
+<% content_for :title, "Invoice · Ops Desk" %>
+
+<p class="text-xs uppercase tracking-wider text-zinc-500">Invoice</p>
+<h1 class="mt-1 text-2xl font-semibold tracking-tight text-zinc-50"><%= number_to_currency(@invoice.amount_cents / 100.0) %></h1>
+<p class="mt-2 text-sm text-zinc-400">
+  <%= link_to @invoice.customer.company, customer_path(@invoice.customer), class: "hover:text-zinc-200" %>
+  · <span class="capitalize"><%= @invoice.status %></span>
+  · issued <%= l(@invoice.issued_at, format: :short) %>
+  <% if @invoice.paid_at %>
+    · paid <%= l(@invoice.paid_at, format: :short) %>
+  <% end %>
+</p>

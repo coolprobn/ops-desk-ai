@@ -1,0 +1,118 @@
+acme_corp:
+  organization: northwind
+  name: Jordan Hale
+  email: billing@acme.example
+  company: Acme Corp
+  status: active
+
+brightline:
+  organization: northwind
+  name: Priya Shah
+  email: priya@brightline.example
+  company: Brightline Health
+  status: active
+
+harbor:
+  organization: northwind
+  name: Chris Nguyen
+  email: chris@harborfreight.example
+  company: Harbor Freight Labs
+  status: active
+
+nimbus:
+  organization: northwind
+  name: Elena Rossi
+  email: elena@nimbus.example
+  company: Nimbus Analytics
+  status: paused
+
+cobalt:
+  organization: northwind
+  name: Marcus Cole
+  email: marcus@cobalt.example
+  company: Cobalt Retail
+  status: active
+
+pine:
+  organization: northwind
+  name: Amelia Brooks
+  email: amelia@pineandco.example
+  company: Pine & Co
+  status: active
+
+orbit:
+  organization: northwind
+  name: Diego Alvarez
+  email: diego@orbitmail.example
+  company: Orbit Mail
+  status: churned
+
+lumen:
+  organization: northwind
+  name: Sofia Berg
+  email: sofia@lumen.example
+  company: Lumen Studio
+  status: active
+
+quarry:
+  organization: northwind
+  name: Nate Feldman
+  email: nate@quarry.example
+  company: Quarry Payments
+  status: active
+
+kite:
+  organization: northwind
+  name: Hannah Cho
+  email: hannah@kite.example
+  company: Kite Logistics
+  status: active
+
+willow:
+  organization: northwind
+  name: Owen Blake
+  email: owen@willow.example
+  company: Willow Clinics
+  status: active
+
+apex:
+  organization: northwind
+  name: Rita Gomez
+  email: rita@apex.example
+  company: Apex Fleet
+  status: active
+
+acme_inc:
+  organization: globex
+  name: Taylor Quinn
+  email: ap@acme.example
+  company: Acme Inc
+  status: active
+
+helix:
+  organization: globex
+  name: Imani Wells
+  email: imani@helix.example
+  company: Helix Bio
+  status: active
+
+marsh:
+  organization: globex
+  name: Ben Park
+  email: ben@marsh.example
+  company: Marsh Hardware
+  status: active
+
+tide:
+  organization: globex
+  name: Clara Dunn
+  email: clara@tide.example
+  company: Tide Agency
+  status: churned
+
+northstar:
+  organization: globex
+  name: Leo Hart
+  email: leo@northstar.example
+  company: Northstar Ops
+  status: active

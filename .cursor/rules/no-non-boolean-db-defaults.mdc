@@ -1,0 +1,28 @@
+---
+description: Non-boolean column defaults belong on the model, not the migration
+alwaysApply: true
+---
+
+# No non-boolean database defaults
+
+Do not put a `default:` on a migration column unless the column is boolean. String, integer, enum, and timestamp defaults are hard to change later. Set them on the model.
+
+```ruby
+# bad
+create_table :memberships do |t|
+  t.string :role, null: false, default: "operator"
+end
+```
+
+```ruby
+# good
+create_table :memberships do |t|
+  t.string :role, null: false
+end
+
+class Membership < ApplicationRecord
+  enum :role, { operator: "operator", admin: "admin" }, default: :operator, validate: true
+end
+```
+
+Boolean columns may keep a database default (`default: false`).

@@ -1,0 +1,32 @@
+---
+description: Permission can/cannot HTTP tests live in *_access_integration_test
+alwaysApply: true
+---
+
+# Access integration tests
+
+Policy permission coverage (can, cannot, tenant 404, signed-out redirect, sees vs does not see because of membership) lives in `test/integration/{resource}_access_integration_test.rb`. Display and flow stay in the resource integration file.
+
+```ruby
+# bad
+# test/integration/customers_test.rb
+class CustomersTest < ActionDispatch::IntegrationTest
+  test "alex on northwind cannot show a globex customer" do
+    get customer_path(customers(:acme_inc))
+    assert_response :not_found
+  end
+end
+```
+
+```ruby
+# good
+# test/integration/customer_access_integration_test.rb
+class CustomerAccessIntegrationTest < ActionDispatch::IntegrationTest
+  test "alex on northwind cannot show a globex customer" do
+    get customer_path(customers(:acme_inc))
+    assert_response :not_found
+  end
+end
+```
+
+Do not put currency or copied page text that is not a permission check in an access file. Model `in_org` tests stay in `test/models/`. Do not add empty access files for resources with no HTTP permission tests yet.

@@ -1,0 +1,32 @@
+---
+description: Each test asserts one observable outcome
+alwaysApply: true
+---
+
+# One outcome per test
+
+A test is one scenario. Actor, starting point, action, one expected observable. Independent facts get their own test so a failure names the broken outcome.
+
+`refute record.valid?` plus `assert_includes record.errors[:name]` is one validation. Do not bundle name, email, and company in one test.
+
+```ruby
+# bad
+test "requires name email and company" do
+  customer = organizations(:northwind).customers.new
+  refute customer.valid?
+  assert_includes customer.errors[:name], "can't be blank"
+  assert_includes customer.errors[:email], "can't be blank"
+  assert_includes customer.errors[:company], "can't be blank"
+end
+```
+
+```ruby
+# good
+test "requires name" do
+  customer = organizations(:northwind).customers.new
+  refute customer.valid?
+  assert_includes customer.errors[:name], "can't be blank"
+end
+```
+
+HTTP is the same. Seeing Acme Corp and not seeing Acme Inc are two tests. `$199.00` and `$99.00` are two tests.

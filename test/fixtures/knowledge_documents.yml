@@ -1,0 +1,58 @@
+northwind_pricing:
+  organization: northwind
+  title: Pricing policy
+  category: pricing
+  body: |
+    Starter is $49 per month. Pro is $99 per month. Business is $199 per month.
+    Plan changes take effect at the next renewal unless an account owner requests an immediate cutover.
+    Immediate upgrades are prorated. Downgrades are not prorated.
+    Seat overages on Pro start at 5 seats. Business includes 25 seats.
+
+northwind_refunds:
+  organization: northwind
+  title: Refund policy
+  category: refunds
+  body: |
+    Refunds are allowed within 30 days of the invoice paid_at date.
+    Refunds under $100 may be issued by any operator.
+    Refunds of $100 or more require an admin approval.
+    Goodwill credits cannot exceed one month of the current plan.
+    Duplicate charges are always refundable once confirmed on the invoice list.
+
+northwind_cancellation:
+  organization: northwind
+  title: Cancellation policy
+  category: cancellation
+  body: |
+    Customers may cancel at any time. Access continues through the current renewal_at date.
+    Annual prepay is not offered. There is no early-termination fee on monthly plans.
+    Canceled accounts keep data for 30 days, then it is deleted.
+
+northwind_billing_faq:
+  organization: northwind
+  title: Billing FAQ
+  category: billing
+  body: |
+    Invoices are issued three days before renewal_at.
+    Failed payments move the subscription to past_due after one retry.
+    A doubled invoice usually means a plan upgrade or a two-month prepay, not a billing error.
+
+northwind_sla:
+  organization: northwind
+  title: Standard SLA
+  category: sla
+  body: |
+    Pro support responds in one business day. Business support responds in four hours.
+    Urgent billing outages are 24/7 for Business.
+
+globex_refunds:
+  organization: globex
+  title: Refund policy
+  category: refunds
+  body: Globex does not issue cash refunds. Unused time is credited to the next invoice only.
+
+globex_pricing:
+  organization: globex
+  title: Pricing policy
+  category: pricing
+  body: Starter $39, Pro $129, Enterprise $499. Enterprise includes a named CSM.

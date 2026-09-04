@@ -1,0 +1,27 @@
+---
+description: Minitest asserts observable outcomes, never implementation
+alwaysApply: true
+---
+
+# Test outcomes, not implementation
+
+A test is a scenario: actor, starting point, action, expected observable outcome. That is the [Minitest Rails](https://minitestrails.com/guide/how-to-approach-testing) standard. Model tests cover [validations, scopes, and methods](https://minitestrails.com/guide/testing-models). HTTP tests cover status, redirects, and copied page text.
+
+Outcomes include validation errors, persisted records, scope results, HTTP status, redirects, and copied page text. Not grepping Gemfile, migrations, routes, or test_helper. Not asserting `enum.keys` lists, `column_names`, or Turbo/HTML internals.
+
+Cursor `.mdc` rules are agent process guardrails. They are not proved by source-grep Minitest.
+
+```ruby
+# bad
+assert_equal %w[pricing refunds], Model.categories.keys
+assert_match(/create_table :foo/, File.read("db/migrate/..."))
+```
+
+```ruby
+# good
+refute document.valid?
+assert_includes document.errors[:category], "is not included in the list"
+
+get customers_path
+assert_select "a", text: "Acme Corp"
+```

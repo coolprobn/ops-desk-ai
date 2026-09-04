@@ -1,0 +1,2 @@
+class SupportCasePolicy < OrganizationOwnedPolicy
+end

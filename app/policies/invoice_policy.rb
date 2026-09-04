@@ -1,0 +1,2 @@
+class InvoicePolicy < OrganizationOwnedPolicy
+end

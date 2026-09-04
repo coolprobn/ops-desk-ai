@@ -1,0 +1,26 @@
+---
+description: When adding AI, use the ruby_llm gem. Do not hand-roll LLM clients.
+alwaysApply: true
+---
+
+# Use RubyLLM for AI
+
+Do not install `ruby_llm` until AI work is requested. When it is, that gem is the only LLM client.
+
+RubyLLM already covers chat, tools (`RubyLLM::Tool`), agents, streaming, embeddings, images, transcription, structured output, and Rails persistence (`acts_as_chat`). Do not wrap Faraday, Net::HTTP, or a provider SDK around OpenAI, Anthropic, Gemini, or similar for those jobs.
+
+```ruby
+# bad
+gem "ruby-openai"
+response = Faraday.post("https://api.openai.com/v1/chat/completions", ...)
+```
+
+```ruby
+# good
+gem "ruby_llm"
+chat = RubyLLM.chat
+chat.with_tools(LookupCustomer)
+chat.ask("Why did Acme's bill double?")
+```
+
+Do not add `ruby-openai`, `openai`, `anthropic`, or `langchainrb` next to it.

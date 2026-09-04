@@ -1,0 +1,166 @@
+<% now = Time.zone.parse("2026-09-01 12:00:00") %>
+
+acme_corp_canceled:
+  organization: northwind
+  customer: acme_corp
+  plan_name: Pro
+  status: canceled
+  monthly_price_cents: 9900
+  started_at: <%= now - 14.months %>
+  renewal_at: <%= now - 2.months %>
+  canceled_at: <%= now - 2.months %>
+
+acme_corp_business:
+  organization: northwind
+  customer: acme_corp
+  plan_name: Business
+  status: active
+  monthly_price_cents: 19900
+  started_at: <%= now - 2.months %>
+  renewal_at: <%= now + 1.month %>
+
+brightline_business:
+  organization: northwind
+  customer: brightline
+  plan_name: Business
+  status: active
+  monthly_price_cents: 19900
+  started_at: <%= now - 8.months %>
+  renewal_at: <%= now + 20.days %>
+
+harbor_pro:
+  organization: northwind
+  customer: harbor
+  plan_name: Pro
+  status: past_due
+  monthly_price_cents: 9900
+  started_at: <%= now - 11.months %>
+  renewal_at: <%= now - 5.days %>
+
+nimbus_starter:
+  organization: northwind
+  customer: nimbus
+  plan_name: Starter
+  status: paused
+  monthly_price_cents: 4900
+  started_at: <%= now - 6.months %>
+  renewal_at: <%= now + 2.months %>
+
+cobalt_business:
+  organization: northwind
+  customer: cobalt
+  plan_name: Business
+  status: active
+  monthly_price_cents: 19900
+  started_at: <%= now - 18.months %>
+  renewal_at: <%= now + 12.days %>
+
+pine_pro:
+  organization: northwind
+  customer: pine
+  plan_name: Pro
+  status: active
+  monthly_price_cents: 9900
+  started_at: <%= now - 4.months %>
+  renewal_at: <%= now + 26.days %>
+
+orbit_starter:
+  organization: northwind
+  customer: orbit
+  plan_name: Starter
+  status: canceled
+  monthly_price_cents: 4900
+  started_at: <%= now - 16.months %>
+  renewal_at: <%= now - 4.months %>
+  canceled_at: <%= now - 4.months %>
+
+lumen_pro:
+  organization: northwind
+  customer: lumen
+  plan_name: Pro
+  status: trialing
+  monthly_price_cents: 0
+  started_at: <%= now - 10.days %>
+  renewal_at: <%= now + 20.days %>
+
+quarry_business:
+  organization: northwind
+  customer: quarry
+  plan_name: Business
+  status: active
+  monthly_price_cents: 24900
+  started_at: <%= now - 9.months %>
+  renewal_at: <%= now + 8.days %>
+
+kite_pro:
+  organization: northwind
+  customer: kite
+  plan_name: Pro
+  status: active
+  monthly_price_cents: 9900
+  started_at: <%= now - 7.months %>
+  renewal_at: <%= now + 14.days %>
+
+willow_starter:
+  organization: northwind
+  customer: willow
+  plan_name: Starter
+  status: active
+  monthly_price_cents: 4900
+  started_at: <%= now - 3.months %>
+  renewal_at: <%= now + 5.days %>
+
+apex_business:
+  organization: northwind
+  customer: apex
+  plan_name: Business
+  status: active
+  monthly_price_cents: 19900
+  started_at: <%= now - 13.months %>
+  renewal_at: <%= now + 18.days %>
+
+acme_inc_enterprise:
+  organization: globex
+  customer: acme_inc
+  plan_name: Enterprise
+  status: active
+  monthly_price_cents: 49900
+  started_at: <%= now - 10.months %>
+  renewal_at: <%= now + 11.days %>
+
+helix_pro:
+  organization: globex
+  customer: helix
+  plan_name: Pro
+  status: active
+  monthly_price_cents: 12900
+  started_at: <%= now - 5.months %>
+  renewal_at: <%= now + 3.days %>
+
+marsh_starter:
+  organization: globex
+  customer: marsh
+  plan_name: Starter
+  status: past_due
+  monthly_price_cents: 3900
+  started_at: <%= now - 2.years %>
+  renewal_at: <%= now - 9.days %>
+
+tide_pro:
+  organization: globex
+  customer: tide
+  plan_name: Pro
+  status: canceled
+  monthly_price_cents: 12900
+  started_at: <%= now - 20.months %>
+  renewal_at: <%= now - 2.months %>
+  canceled_at: <%= now - 2.months %>
+
+northstar_enterprise:
+  organization: globex
+  customer: northstar
+  plan_name: Enterprise
+  status: active
+  monthly_price_cents: 49900
+  started_at: <%= now - 7.months %>
+  renewal_at: <%= now + 22.days %>

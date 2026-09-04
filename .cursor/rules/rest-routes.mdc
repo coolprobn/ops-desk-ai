@@ -1,0 +1,26 @@
+---
+description: Routes must be REST resources only; non-REST needs a human-approved allowlist
+alwaysApply: true
+---
+
+# REST routes only
+
+Draw routes with `resources` / `resource` (optional `only:` / `except:` / `param:`). Actions are only the seven: index, show, new, create, edit, update, destroy. `root` may alias a REST show.
+
+```ruby
+# bad
+get "reports" => "reports#weekly"
+resources :invoices do
+  post :pay, on: :member
+end
+```
+
+```ruby
+# good
+resources :invoices, only: %i[index show]
+resource :session
+```
+
+Do not use `get` / `post` / `put` / `patch` / `delete` / `match` / `mount`, or `member` / `collection` extras. If a non-REST route is required, stop and ask the human before drawing it. After they approve, list the path under Approved exceptions in this file.
+
+Approved exceptions: none.

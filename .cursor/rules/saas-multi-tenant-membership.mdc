@@ -1,0 +1,41 @@
+---
+description: SaaS tenancy is Membership, never User belongs_to Organization
+alwaysApply: true
+---
+
+# Multi-tenant membership
+
+A SaaS user belongs to organizations through `Membership`. One user, many orgs. Role lives on the membership. `Session` is identity only (this browser is this user). The current tenant is a signed `organization_id` cookie, checked against a membership row.
+
+```ruby
+# bad
+class User
+  belongs_to :organization
+  enum :role, { operator: "operator", admin: "admin" }
+end
+
+class Session
+  belongs_to :user
+  belongs_to :organization
+end
+
+Current.organization = Current.session.organization
+```
+
+```ruby
+# good
+class Membership
+  belongs_to :user
+  belongs_to :organization
+  enum :role, { operator: "operator", admin: "admin" }
+end
+
+class Session
+  belongs_to :user
+end
+
+membership = user.memberships.find_by!(organization_id: cookies.signed[:organization_id])
+Current.organization = membership.organization
+```
+
+Do not put `organization_id` or `role` on `users`. Do not put `organization_id` on `sessions`. Destroying an org destroys memberships, not users. Coverage is membership outcomes, org isolation, and controller 404s when the actor is outside the tenant.

@@ -1,0 +1,17 @@
+<% content_for :title, "Knowledge · Ops Desk" %>
+
+<div class="flex items-baseline justify-between">
+  <h1 class="text-2xl font-semibold tracking-tight text-zinc-50">Knowledge</h1>
+  <p class="text-sm text-zinc-500"><%= @knowledge_documents.size %></p>
+</div>
+
+<ul class="mt-6 divide-y divide-zinc-800 rounded-lg border border-zinc-800">
+  <% @knowledge_documents.each do |document| %>
+    <li>
+      <%= link_to knowledge_document_path(document), class: "block px-4 py-3 hover:bg-zinc-900/60" do %>
+        <p class="text-sm font-medium text-zinc-100"><%= document.title %></p>
+        <p class="mt-0.5 text-xs capitalize text-zinc-500"><%= document.category %></p>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

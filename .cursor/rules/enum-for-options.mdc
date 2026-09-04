@@ -1,0 +1,21 @@
+---
+description: Closed option lists on models are enum, not constants
+alwaysApply: true
+---
+
+# Enum for options
+
+A fixed set of string choices on a model is `enum`, not a frozen `%w` constant plus `inclusion`. Status, role, priority, and category already follow this. Do not add `CATEGORIES`, `STATUSES`, or `ROLES`.
+
+```ruby
+# bad
+CATEGORIES = %w[pricing refunds billing].freeze
+validates :category, presence: true, inclusion: { in: CATEGORIES }
+```
+
+```ruby
+# good
+enum :category, { pricing: "pricing", refunds: "refunds", billing: "billing" }, validate: true
+```
+
+Do not put a SQL `default:` on that column unless it is boolean.

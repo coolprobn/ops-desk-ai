@@ -1,0 +1,121 @@
+<% now = Time.zone.parse("2026-09-01 12:00:00") %>
+
+acme_corp_bill_doubled:
+  organization: northwind
+  customer: acme_corp
+  subject: Bill doubled this month
+  description: Our August invoice is $199. We were paying $99 on Pro. Nobody told us about an upgrade. We want this reversed.
+  status: open
+  priority: high
+  opened_at: <%= now - 2.days %>
+
+acme_corp_plan_upgrade:
+  organization: northwind
+  customer: acme_corp
+  subject: Plan upgrade confirmation?
+  description: A Northwind AE said we might move to Business for extra seats. We asked for a quote, not an immediate cutover.
+  status: resolved
+  priority: normal
+  opened_at: <%= now - 6.weeks %>
+  resolved_at: <%= now - 5.weeks %>
+
+acme_corp_missing_invoice:
+  organization: northwind
+  customer: acme_corp
+  subject: Missing invoice PDF for June
+  description: Finance cannot close books without the June PDF.
+  status: closed
+  priority: low
+  opened_at: <%= now - 4.months %>
+  resolved_at: <%= now - 4.months + 3.days %>
+
+acme_corp_seat_count:
+  organization: northwind
+  customer: acme_corp
+  subject: Seat count for CS team
+  description: We added 8 CS agents in July. Does Pro include that?
+  status: pending
+  priority: normal
+  opened_at: <%= now - 3.months %>
+
+harbor_card_declined:
+  organization: northwind
+  customer: harbor
+  subject: Card declined
+  description: Renewal failed. We updated the card in the portal but still see past due.
+  status: open
+  priority: urgent
+  opened_at: <%= now - 1.day %>
+
+brightline_hipaa:
+  organization: northwind
+  customer: brightline
+  subject: HIPAA BAA request
+  description: Need a signed BAA before we roll out to two more clinics.
+  status: pending
+  priority: high
+  opened_at: <%= now - 9.days %>
+
+nimbus_pause_billing:
+  organization: northwind
+  customer: nimbus
+  subject: Pause billing during outage recovery
+  description: We paused internally after the warehouse fire. Confirm no invoices go out until October.
+  status: open
+  priority: high
+  opened_at: <%= now - 4.days %>
+
+orbit_cancel_export:
+  organization: northwind
+  customer: orbit
+  subject: Cancel and export data
+  description: Leaving for a competitor. Need export plus confirmation that renewal will not charge.
+  status: resolved
+  priority: normal
+  opened_at: <%= now - 4.months %>
+  resolved_at: <%= now - 4.months + 2.days %>
+
+cobalt_annual_invoice:
+  organization: northwind
+  customer: cobalt
+  subject: Annual invoice looks like two months stacked
+  description: We asked to prepay two months. The invoice shows $398. Is that expected?
+  status: open
+  priority: normal
+  opened_at: <%= now - 3.days %>
+
+lumen_trial_ending:
+  organization: northwind
+  customer: lumen
+  subject: Trial ending, which plan?
+  description: Design team is 4 people. Starter vs Pro?
+  status: open
+  priority: low
+  opened_at: <%= now - 6.hours %>
+
+willow_refund:
+  organization: northwind
+  customer: willow
+  subject: Refund last month, patient volume dropped
+  description: Clinic closed for renovations. Asking for a refund of the last Starter invoice.
+  status: open
+  priority: normal
+  opened_at: <%= now - 8.days %>
+
+acme_inc_enterprise_addendum:
+  organization: globex
+  customer: acme_inc
+  subject: Enterprise contract addendum
+  description: Legal wants the 2026 addendum attached to the workspace.
+  status: open
+  priority: normal
+  opened_at: <%= now - 5.days %>
+
+marsh_past_due:
+  organization: globex
+  customer: marsh
+  subject: Past due but store is closed Sundays
+  description: They pay by check. Asked us to extend past_due by a week.
+  status: open
+  priority: high
+  opened_at: <%= now - 2.days %>

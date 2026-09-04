@@ -1,0 +1,5 @@
+ts	phase	decision	why	evidence	result
+2026-09-03T02:28:33Z	frame	Build the Week 12 AI ops desk as one Rails app, not a toy Week 1 then rewrite	The spec already names the end architecture. Designing the schema for agent runs, approvals, and knowledge on day one keeps later weeks from bolting on.	production-ai-engineering-12-week-plan.md	framed
+2026-09-03T02:28:33Z	frame	Skip architect arena and how explorers	Greenfield repo. The 12-week plan already chose Rails, hand-rolled tool loop, HITL writes, pgvector, and persistence entities. Another design bakeoff would delay a working desk.	playbooks/feature.md architect skip	skipped
+2026-09-03T02:38:37Z	scope	Cut the AI layer. Week 1 is SaaS only.	The plan says do not build AI yet. Keep org, customers, subscriptions, invoices, cases, knowledge docs, tenancy, tests.	production-ai-engineering-12-week-plan.md:280	AI files deleted
+2026-09-03T02:43:22Z	week1	Week 1 SaaS verified. 22 tests green. Alex sees Acme Corp, 404 on Globex Acme Inc.	Week 1 says do not build AI yet. Isolation is the load-bearing check.	bin/rails test, curl customers 200/404	VERIFIED

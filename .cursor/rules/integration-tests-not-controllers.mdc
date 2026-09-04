@@ -1,0 +1,24 @@
+---
+description: HTML coverage is integration tests, not controller tests
+alwaysApply: true
+---
+
+# Integration tests, not controller tests
+
+HTML request coverage is [`ActionDispatch::IntegrationTest`](https://api.rubyonrails.org/v8.1.3/classes/ActionDispatch/IntegrationTest.html) under `test/integration/`. File and class names describe the resource or flow, not `*ControllerTest`. `test/controllers/` is for JSON APIs only. This app is HTML. Do not add files under `test/controllers/`.
+
+`ActionController::TestCase` is discouraged even for APIs (Rails keeps it for backward compatibility). Prefer `ActionDispatch::IntegrationTest` always. If a JSON API is added later, those tests may live under `test/controllers/` and still inherit `ActionDispatch::IntegrationTest`. Do not use `ActionController::TestCase`.
+
+```ruby
+# bad
+# test/controllers/customers_controller_test.rb
+class CustomersControllerTest < ActionDispatch::IntegrationTest
+```
+
+```ruby
+# good
+# test/integration/customers_test.rb
+class CustomersTest < ActionDispatch::IntegrationTest
+```
+
+Model tests stay in `test/models/`.

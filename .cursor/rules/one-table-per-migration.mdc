@@ -1,0 +1,37 @@
+---
+description: One ActiveRecord table per migration file
+globs: db/migrate/**/*.rb
+alwaysApply: false
+---
+
+# One table per migration
+
+Do not create multiple tables in a single migration.
+
+```ruby
+# BAD
+class CreateOpsDesk < ActiveRecord::Migration[8.1]
+  def change
+    create_table :organizations do |t|
+      t.string :name, null: false
+      t.timestamps
+    end
+    create_table :customers do |t|
+      t.references :organization, null: false, foreign_key: true
+      t.timestamps
+    end
+  end
+end
+
+# GOOD
+class CreateOrganizations < ActiveRecord::Migration[8.1]
+  def change
+    create_table :organizations do |t|
+      t.string :name, null: false
+      t.timestamps
+    end
+  end
+end
+```
+
+Adding columns or foreign keys to an existing table is its own migration. That file must not call `create_table`.

@@ -1,0 +1,26 @@
+---
+description: Controllers and views read current_user, not Current.user
+alwaysApply: true
+---
+
+# current_user helper
+
+`Authentication` exposes `current_user` as a `helper_method`. Controllers and views call that. Do not reach into `Current.user` from a controller, view, or helper.
+
+```erb
+<%# bad %>
+<%= Current.user.name %>
+
+<%# good %>
+<%= current_user.name %>
+```
+
+```ruby
+# bad
+Current.user.organizations.find(params[:organization_id])
+
+# good
+current_user.organizations.find(params[:organization_id])
+```
+
+`current_user` is the one place that may read `Current.user`.

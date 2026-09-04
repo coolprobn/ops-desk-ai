@@ -1,0 +1,2 @@
+class KnowledgeDocumentPolicy < OrganizationOwnedPolicy
+end

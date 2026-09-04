@@ -1,0 +1,15 @@
+---
+description: Encode human corrections as Cursor rules instead of one-off apologies
+alwaysApply: true
+---
+
+# Capture corrections as rules
+
+When the human corrects a generation mistake, do not only fix the code.
+
+1. Fix the instance.
+2. Add a focused `.mdc` under `.cursor/rules/` named for the mistake.
+3. Put a failing example and the required shape in the rule.
+4. Product behavior gets an outcome Minitest. Agent process (how to write Rails) gets a Cursor `.mdc`. Do not add Minitest that reads source files to police style.
+
+One concern per file. Keep it under 50 lines. These rules are meant to be copied into other greenfield Rails apps.

@@ -1,0 +1,2 @@
+class SubscriptionPolicy < OrganizationOwnedPolicy
+end

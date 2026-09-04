@@ -1,0 +1,141 @@
+<% now = Time.zone.parse("2026-09-01 12:00:00") %>
+
+<% [13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3].each do |months_ago| %>
+acme_corp_canceled_invoice_<%= months_ago %>:
+  organization: northwind
+  customer: acme_corp
+  subscription: acme_corp_canceled
+  amount_cents: 9900
+  status: paid
+  issued_at: <%= now - months_ago.months %>
+  paid_at: <%= now - months_ago.months + 2.days %>
+<% end %>
+
+acme_corp_business_paid:
+  organization: northwind
+  customer: acme_corp
+  subscription: acme_corp_business
+  amount_cents: 19900
+  status: paid
+  issued_at: <%= now - 2.months %>
+  paid_at: <%= now - 2.months + 1.day %>
+
+acme_corp_business_issued:
+  organization: northwind
+  customer: acme_corp
+  subscription: acme_corp_business
+  amount_cents: 19900
+  status: issued
+  issued_at: <%= now - 3.days %>
+
+brightline_paid:
+  organization: northwind
+  customer: brightline
+  subscription: brightline_business
+  amount_cents: 19900
+  status: paid
+  issued_at: <%= now - 1.month %>
+  paid_at: <%= now - 1.month + 1.day %>
+
+harbor_issued:
+  organization: northwind
+  customer: harbor
+  subscription: harbor_pro
+  amount_cents: 9900
+  status: issued
+  issued_at: <%= now - 12.days %>
+
+cobalt_paid:
+  organization: northwind
+  customer: cobalt
+  subscription: cobalt_business
+  amount_cents: 39800
+  status: paid
+  issued_at: <%= now - 20.days %>
+  paid_at: <%= now - 18.days %>
+
+pine_paid:
+  organization: northwind
+  customer: pine
+  subscription: pine_pro
+  amount_cents: 9900
+  status: paid
+  issued_at: <%= now - 8.days %>
+  paid_at: <%= now - 7.days %>
+
+orbit_void:
+  organization: northwind
+  customer: orbit
+  subscription: orbit_starter
+  amount_cents: 4900
+  status: void
+  issued_at: <%= now - 4.months %>
+
+quarry_paid:
+  organization: northwind
+  customer: quarry
+  subscription: quarry_business
+  amount_cents: 24900
+  status: paid
+  issued_at: <%= now - 15.days %>
+  paid_at: <%= now - 14.days %>
+
+kite_issued:
+  organization: northwind
+  customer: kite
+  subscription: kite_pro
+  amount_cents: 9900
+  status: issued
+  issued_at: <%= now - 2.days %>
+
+willow_paid:
+  organization: northwind
+  customer: willow
+  subscription: willow_starter
+  amount_cents: 4900
+  status: paid
+  issued_at: <%= now - 25.days %>
+  paid_at: <%= now - 24.days %>
+
+apex_paid:
+  organization: northwind
+  customer: apex
+  subscription: apex_business
+  amount_cents: 19900
+  status: paid
+  issued_at: <%= now - 6.days %>
+  paid_at: <%= now - 6.days %>
+
+acme_inc_paid:
+  organization: globex
+  customer: acme_inc
+  subscription: acme_inc_enterprise
+  amount_cents: 49900
+  status: paid
+  issued_at: <%= now - 11.days %>
+  paid_at: <%= now - 10.days %>
+
+helix_issued:
+  organization: globex
+  customer: helix
+  subscription: helix_pro
+  amount_cents: 12900
+  status: issued
+  issued_at: <%= now - 1.day %>
+
+marsh_issued:
+  organization: globex
+  customer: marsh
+  subscription: marsh_starter
+  amount_cents: 3900
+  status: issued
+  issued_at: <%= now - 9.days %>
+
+northstar_paid:
+  organization: globex
+  customer: northstar
+  subscription: northstar_enterprise
+  amount_cents: 49900
+  status: paid
+  issued_at: <%= now - 21.days %>
+  paid_at: <%= now - 20.days %>

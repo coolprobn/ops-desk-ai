@@ -1,0 +1,21 @@
+---
+description: Fixture loading is always fixtures :all, never a name list
+alwaysApply: true
+---
+
+# Fixtures :all
+
+Fixture loading is one universe. `fixtures :all` loads every YAML file under `test/fixtures/`. That directory is the source of truth. Do not encode an inclusion list of fixture names in Ruby. Lists drift every time a model or fixture file is added. There is no meaningful performance win.
+
+```ruby
+# bad
+# fixtures :all
+fixtures :organizations, :users
+```
+
+```ruby
+# good
+fixtures :all
+```
+
+Keep the single uncommented `fixtures :all` in `test/test_helper.rb`. Do not call `fixtures` again in individual tests.

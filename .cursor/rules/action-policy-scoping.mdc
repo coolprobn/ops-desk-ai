@@ -1,0 +1,26 @@
+---
+description: Tenant queries use authorized_scope, not current_organization associations
+alwaysApply: true
+---
+
+# Action Policy tenant scoping
+
+Organization-owned records are scoped through Action Policy `relation_scope`, not `current_organization` associations in controllers.
+
+```ruby
+# bad
+@customers = current_organization.customers.order(:company)
+@customer = current_organization.customers.find(params[:id])
+```
+
+```ruby
+# good
+@customers = authorized_scope(Customer.all).order(:company)
+@customer = authorized_scope(Customer.all).find(params[:id])
+```
+
+Put the filter on `OrganizationOwnedPolicy` via `relation_scope` (for example `relation.in_org(organization)`). Controllers then chain `order` / `includes` / `find` / `count` / `limit` on `authorized_scope(Model.all)`.
+
+Keep `current_organization` for the sidebar name, org switcher, and `ApplicationController#current_organization`. `CurrentOrganizationsController` still uses `current_user.organizations` for membership switching.
+
+Do not put `organization_id` on `User` or `Session`. Do not add `verify_authorized` globally.

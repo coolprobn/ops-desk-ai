@@ -1,0 +1,29 @@
+---
+description: Search api.rubyonrails.org before adding app/helpers
+alwaysApply: true
+---
+
+# Search Rails API before helpers
+
+Before adding anything under `app/helpers/`, search https://api.rubyonrails.org/ for this app's Rails version (8.1.3.1). Prefer the framework helper. Domain conversion (cents to dollars) stays at the call site.
+
+Money is integer cents (`amount_cents`, `monthly_price_cents`). Rails formats major units, not cents. There is no cents-specific money type or helper. Divide by `100.0`, then format.
+
+Relevant APIs: ActionView `number_to_currency` (delegates to `ActiveSupport::NumberHelper#number_to_currency`), and `Numeric#to_fs(:currency)`.
+
+```ruby
+# bad
+def format_money(cents)
+  format("$%.2f", cents.to_i / 100.0)
+end
+
+# in a view
+<%= format_money(invoice.amount_cents) %>
+```
+
+```erb
+<%# good %>
+<%= number_to_currency(invoice.amount_cents / 100.0) %>
+```
+
+Do not wrap `number_to_currency` in another helper. Do not add a Money gem for display.

@@ -1,0 +1,12 @@
+<% content_for :title, "#{@support_case.subject} · Ops Desk" %>
+
+<p class="text-xs uppercase tracking-wider text-zinc-500">Support case</p>
+<h1 class="mt-1 text-2xl font-semibold tracking-tight text-zinc-50"><%= @support_case.subject %></h1>
+<p class="mt-2 text-sm text-zinc-400">
+  <%= link_to @support_case.customer.company, customer_path(@support_case.customer), class: "hover:text-zinc-200" %>
+  · <span class="capitalize"><%= @support_case.priority %></span>
+  · <span class="capitalize"><%= @support_case.status %></span>
+  · opened <%= l(@support_case.opened_at, format: :short) %>
+</p>
+
+<div class="mt-8 whitespace-pre-wrap rounded-lg border border-zinc-800 bg-zinc-900/40 px-4 py-4 text-sm leading-6 text-zinc-200"><%= @support_case.description %></div>

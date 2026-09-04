@@ -1,0 +1,17 @@
+alex_northwind:
+  user: alex
+  organization: northwind
+  role: admin
+  created_at: <%= 2.days.ago %>
+
+alex_globex:
+  user: alex
+  organization: globex
+  role: operator
+  created_at: <%= 1.day.ago %>
+
+sam_globex:
+  user: sam
+  organization: globex
+  role: admin
+

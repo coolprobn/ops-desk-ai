@@ -1,0 +1,29 @@
+---
+description: Daily AI on Rails log is one file per week goal, new section per day
+alwaysApply: true
+---
+
+# AI on Rails blog log
+
+After work on this learning repo, update `blog/` before ending the turn. Notes for later posts. First person. What shipped, what broke, what rule or test changed.
+
+One file per week goal from `docs/production-ai-engineering-12-week-plan.md`. Filename is `blog/ai-on-rails-<goal-slug>.md`. No date in the filename. No new file because the calendar day changed.
+
+Until that week's end-of-week outcome is reached, append a `## YYYY-MM-DD` section to the current file. Start a new file only when the next week starts.
+
+```markdown
+# bad
+blog/2026-09-04-day-02.md
+blog/ai-on-rails-day-2.md
+```
+
+```markdown
+# good (same week, next day)
+# blog/ai-on-rails-generate-rails-saas-app.md
+## 2026-09-04
+```
+
+```markdown
+# good (week 2 starts)
+blog/ai-on-rails-structured-case-summarization.md
+```
