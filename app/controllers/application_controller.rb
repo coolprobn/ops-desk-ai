@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_organization
 
+  rescue_from ActionPolicy::Unauthorized do
+    redirect_to root_path, alert: "Not authorized"
+  end
+
   private
 
   def current_organization

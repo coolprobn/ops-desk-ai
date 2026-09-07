@@ -1,0 +1,23 @@
+---
+description: Mutating controllers must authorize! the record; association find is not authz
+alwaysApply: true
+---
+
+# Authorize the record
+
+Looking up through `current_user.organizations` (or similar association find) is not authorization. Controllers that mutate call `authorize!` on the record. Policy denial (`ActionPolicy::Unauthorized`) redirects to root with flash `Not authorized`. Tenant isolation via `authorized_scope.find` stays 404. Do not unify those.
+
+```ruby
+# bad
+organization = current_user.organizations.find(params.require(:organization_id))
+remember_organization(organization)
+```
+
+```ruby
+# good
+organization = Organization.find(params.require(:organization_id))
+authorize! organization, with: CurrentOrganizationPolicy
+remember_organization(organization)
+```
+
+`authorize :user` in ApplicationController is context wiring, not a resource check. Do not add `verify_authorized` globally.

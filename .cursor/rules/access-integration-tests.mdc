@@ -1,32 +1,48 @@
 ---
-description: Permission can/cannot HTTP tests live in *_access_integration_test
+description: Access HTTP tests are cannot-only; one guest test per controller action
 alwaysApply: true
 ---
 
 # Access integration tests
 
-Policy permission coverage (can, cannot, tenant 404, signed-out redirect, sees vs does not see because of membership) lives in `test/integration/{resource}_access_integration_test.rb`. Display and flow stay in the resource integration file.
+`test/integration/{resource}_access_integration_test.rb` covers cannot / no-access only: guest redirect, tenant 404, denied action. Authorized success and display stay in the resource integration file.
+
+One guest test per controller action. Index and show are two entry points. Isolation and deny names omit `user`. Do not test currency formatting. Index isolation asserts unique foreign copied-text with `count: 0`. Titles shared across tenants do not prove exclusion.
+
+Full testing rule: `minitest-rails.mdc`.
 
 ```ruby
 # bad
-# test/integration/customers_test.rb
-class CustomersTest < ActionDispatch::IntegrationTest
-  test "alex on northwind cannot show a globex customer" do
-    get customer_path(customers(:acme_inc))
-    assert_response :not_found
-  end
+test "alex on northwind sees acme corp" do
+end
+
+test "user cannot access a customer from another organization" do
+end
+
+test "guests are redirected to sign in" do
+  get customers_path
 end
 ```
 
 ```ruby
 # good
 # test/integration/customer_access_integration_test.rb
-class CustomerAccessIntegrationTest < ActionDispatch::IntegrationTest
-  test "alex on northwind cannot show a globex customer" do
-    get customer_path(customers(:acme_inc))
-    assert_response :not_found
-  end
+test "guests cannot access customers list page" do
+  get customers_path
+  assert_redirected_to new_session_path
+end
+
+test "guests cannot access a customer detail page" do
+  get customer_path(customers(:acme_inc))
+  assert_redirected_to new_session_path
+end
+
+test "cannot access a customer from another organization" do
+  get customers_path
+  assert_select "a", text: "Acme Inc", count: 0
+  get customer_path(customers(:acme_inc))
+  assert_response :not_found
 end
 ```
 
-Do not put currency or copied page text that is not a permission check in an access file. Model `in_org` tests stay in `test/models/`. Do not add empty access files for resources with no HTTP permission tests yet.
+Every authenticated HTML controller gets an access file once it has HTTP tests. Skip access when every action is public, or when the cannot case is already the resource action (`session` logout). Model `in_org` tests stay in `test/models/`.

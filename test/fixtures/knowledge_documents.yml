@@ -47,12 +47,12 @@ northwind_sla:
 
 globex_refunds:
   organization: globex
-  title: Refund policy
+  title: Globex refund policy
   category: refunds
   body: Globex does not issue cash refunds. Unused time is credited to the next invoice only.
 
 globex_pricing:
   organization: globex
-  title: Pricing policy
+  title: Globex pricing policy
   category: pricing
   body: Starter $39, Pro $129, Enterprise $499. Enterprise includes a named CSM.

@@ -17,8 +17,8 @@ class CustomersControllerTest < ActionDispatch::IntegrationTest
 
 ```ruby
 # good
-# test/integration/customers_test.rb
-class CustomersTest < ActionDispatch::IntegrationTest
+# test/integration/customers_integration_test.rb
+class CustomersIntegrationTest < ActionDispatch::IntegrationTest
 ```
 
 Model tests stay in `test/models/`.

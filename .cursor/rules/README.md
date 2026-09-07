@@ -18,9 +18,11 @@ Cursor rules captured from corrections while building this app. Copy `.cursor/ru
 | `action-policy-scoping.mdc` | Tenant queries via `current_organization.*` instead of `authorized_scope` |
 | `search-rails-api-before-helpers.mdc` | Custom helpers (e.g. `format_money`) when Rails already has the API |
 | `integration-tests-not-controllers.mdc` | HTML tests under `test/controllers/` instead of `test/integration/` |
-| `one-outcome-per-test.mdc` | Several independent facts asserted in one test block |
+| `one-outcome-per-test.mdc` | Several edge cases in one test, or one case split into many named tests |
 | `action-policy-default-deny.mdc` | Open-by-omission policy actions or `manage?` catch-alls |
-| `access-integration-tests.mdc` | Can/cannot permission HTTP tests in the resource display file |
+| `access-integration-tests.mdc` | Happy-path in access, a duplicate of an existing action test, or `user` in deny names |
+| `authorize-the-record.mdc` | Association find treated as authz; Unauthorized mixed with tenant 404 |
 | `ai-on-rails-blog-log.mdc` | A new `blog/` file per calendar day, or a date in the filename |
+| `minitest-rails.mdc` | Missing controller HTTP/system coverage, verb-named tests, enum tests, or policy unit tests |
 
 These rules are agent process guardrails per `test-outcomes.mdc`. Product behavior stays in outcome Minitest.

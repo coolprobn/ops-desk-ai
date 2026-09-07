@@ -5,9 +5,9 @@ alwaysApply: true
 
 # Test outcomes, not implementation
 
-A test is a scenario: actor, starting point, action, expected observable outcome. That is the [Minitest Rails](https://minitestrails.com/guide/how-to-approach-testing) standard. Model tests cover [validations, scopes, and methods](https://minitestrails.com/guide/testing-models). HTTP tests cover status, redirects, and copied page text.
+A test is a scenario: actor, starting point, action, observables for one edge case. That is the [Minitest Rails](https://minitestrails.com/guide/how-to-approach-testing) standard. Model tests cover [validations, scopes, and methods](https://minitestrails.com/guide/testing-models). HTTP tests cover status, redirects, and copied page text.
 
-Outcomes include validation errors, persisted records, scope results, HTTP status, redirects, and copied page text. Not grepping Gemfile, migrations, routes, or test_helper. Not asserting `enum.keys` lists, `column_names`, or Turbo/HTML internals.
+Outcomes include validation errors, persisted records, scope results, HTTP status, redirects, and copied page text. Not grepping Gemfile, migrations, routes, or test_helper. Not asserting `enum.keys` lists, `column_names`, Turbo/HTML internals, or currency formatting (`$199.00`).
 
 Cursor `.mdc` rules are agent process guardrails. They are not proved by source-grep Minitest.
 
@@ -20,7 +20,7 @@ assert_match(/create_table :foo/, File.read("db/migrate/..."))
 ```ruby
 # good
 refute document.valid?
-assert_includes document.errors[:category], "is not included in the list"
+assert_includes document.errors[:title], "can't be blank"
 
 get customers_path
 assert_select "a", text: "Acme Corp"

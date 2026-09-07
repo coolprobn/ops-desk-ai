@@ -1,0 +1,97 @@
+---
+description: Minitest Rails testing. Model validations, HTTP integration vs access, no policy unit tests.
+alwaysApply: true
+---
+
+# Minitest Rails
+
+Patterns from [Minitest Rails](https://minitestrails.com/guide/testing-models). Append later HTTP and other lessons here. Do not add another test-pattern `.mdc`.
+
+Outcomes stay as in `test-outcomes.mdc`. One edge case per test, as in `one-outcome-per-test.mdc`. Several assertions in that case are fine.
+
+## Model tests
+
+First test is `record is valid` on a fixture row. That proves fixtures load and the record passes `validates`. Then invalid cases, in the same order as the `validates` lines on the model. Then public methods, only if they stay.
+
+Do not test `enum`. Rails already validates enum values. Do not assert `errors[:status]` or `errors[:category]` for "is not included in the list".
+
+Do not test a public method unless it has high cyclomatic complexity or is business-critical. Thin wrappers belong on the page.
+
+```ruby
+# bad
+# only refute cases, no fixture valid?
+```
+
+```ruby
+# good
+test "record is valid" do
+  assert customers(:acme_corp).valid?
+end
+
+test "requires name" do
+  customer = organizations(:northwind).customers.new
+  refute customer.valid?
+  assert_includes customer.errors[:name], "can't be blank"
+end
+```
+
+## HTTP integration tests
+
+Every HTML controller has `{resource}_integration_test.rb` (authorized actions), `{resource}_access_integration_test.rb` (cannot / no-access only), and `test/system/{resource}_test.rb` (Rails generator name, no `_system` suffix). Skip access when every action is public (`passwords`, `rails/health`), or when the only authenticated action is already the resource test (`session` destroy is `logs out the user`). Skip system for `rails/health`.
+
+Authorized tests are named as the visit or action (`visits customers list`, `visits a customer`, `switches current organization`), not the HTTP verb and not fixture keys. A show test asserts the record and the associated records the page renders. Do not assert currency formatting.
+
+`new`/`create` and `edit`/`update` are one happy-path pair. Visit the form and submit in the same test. Do not add a second test that only loads `new` or `edit`. Index and show stay visit-only. Invalid paths stay their own cases.
+
+Access is cannot-only. One guest test per controller action (`guests cannot access customers list page`). Isolation and deny names omit `user` (`cannot access a customer from another organization`). Guest deny stays one test per action. Each action is its own entry point. Call unauthenticated actors `guests`. Do not write `signed out guests`.
+
+No `test/policies/`. Policy is proved by HTTP. Policy denial redirects to root with flash. Tenant isolation returns 404. Do not unify those.
+
+`authorize :user` in ApplicationController is context, not a resource check. Controllers that mutate must call `authorize!` on the record. Association find is not authorization.
+
+## System tests
+
+System tests drive the browser. Index and show only assert the page loaded (`h1` or copied heading). `new`/`create` and `edit`/`update` visit the form, assert it loaded, submit, and assert persistence in one test. Do not add a visit-only test for `new` or `edit`. Do not re-assert associated records or currency. Those stay in the integration file.
+
+`SystemSessionHelper#sign_in_as` plants a signed `session_id` cookie. Do not fill the sign-in form from that helper. The session system test is the one place that submits Email and Password. If that test passes, authentication works. Other system tests must not log in through the form.
+
+```ruby
+# bad
+test "sam cannot switch to northwind" do
+end
+
+test "user sees customers in the current organization" do
+end
+
+test "customer show formats business plan as currency" do
+end
+```
+
+```ruby
+# good
+# test/integration/customers_integration_test.rb
+test "visits customers list" do
+  get customers_path
+  assert_select "a", text: "Acme Corp"
+end
+
+test "visits a customer" do
+  get customer_path(customers(:acme_inc))
+  assert_select "h1", text: "Acme Inc"
+  assert_select "a", text: subscriptions(:acme_inc_enterprise).plan_name
+end
+
+# test/integration/customer_access_integration_test.rb
+test "guests cannot access customers list page" do
+  get customers_path
+  assert_redirected_to new_session_path
+end
+
+test "cannot access a customer from another organization" do
+  get customers_path
+  assert_select "a", text: "Acme Inc", count: 0
+
+  get customer_path(customers(:acme_inc))
+  assert_response :not_found
+end
+```

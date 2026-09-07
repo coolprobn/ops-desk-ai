@@ -1,13 +1,13 @@
 ---
-description: Each test asserts one observable outcome
+description: Each test covers one edge case. Several assertions in that case are fine.
 alwaysApply: true
 ---
 
-# One outcome per test
+# One edge case per test
 
-A test is one scenario. Actor, starting point, action, one expected observable. Independent facts get their own test so a failure names the broken outcome.
+A test is one edge case. Actor, starting point, action, every observable that belongs to that case. Split only when the edge case changes. Do not split one case into several tests that only differ by description.
 
-`refute record.valid?` plus `assert_includes record.errors[:name]` is one validation. Do not bundle name, email, and company in one test.
+Name, email, and company are three validations. Those are three cases. Redirect, flash, and unchanged tenant on a denied org switch are one case. Visiting the sign-in form and submitting it are one happy path, not two tests.
 
 ```ruby
 # bad
@@ -18,6 +18,14 @@ test "requires name email and company" do
   assert_includes customer.errors[:email], "can't be blank"
   assert_includes customer.errors[:company], "can't be blank"
 end
+
+test "sam cannot switch to northwind" do
+  assert_redirected_to root_path
+end
+
+test "denied switch shows not authorized" do
+  assert_select "#alert", text: "Not authorized"
+end
 ```
 
 ```ruby
@@ -27,6 +35,12 @@ test "requires name" do
   refute customer.valid?
   assert_includes customer.errors[:name], "can't be blank"
 end
-```
 
-HTTP is the same. Seeing Acme Corp and not seeing Acme Inc are two tests. `$199.00` and `$99.00` are two tests.
+test "cannot switch to organization they are not a member of" do
+  patch current_organization_path, params: { organization_id: organizations(:northwind).id }
+  assert_redirected_to root_path
+  follow_redirect!
+  assert_select "#alert", text: "Not authorized"
+  assert_select "aside p", text: "Globex"
+end
+```

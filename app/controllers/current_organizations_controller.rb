@@ -1,6 +1,9 @@
 class CurrentOrganizationsController < ApplicationController
   def update
-    organization = current_user.organizations.find(params.require(:organization_id))
+    organization = Organization.find(params.require(:organization_id))
+
+    authorize! organization, with: CurrentOrganizationPolicy
+
     remember_organization(organization)
     redirect_back fallback_location: root_path
   end

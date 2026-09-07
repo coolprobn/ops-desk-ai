@@ -1,46 +1,79 @@
 # AI on Rails - Part 1: Generate a Rails SaaS app
 
-Series: AI on Rails
-Week: 1 of 13 (SaaS foundation, no LLM yet)
+This is week 1 of 13 in [AI on Rails](ai-on-rails.md). No LLM in the app yet.
 
-Daily log. Later this becomes a post. Notes, not a polished essay. One file for this week. A new `## YYYY-MM-DD` section each day until the Week 1 outcome is reached.
+An agent can scaffold a multi-tenant Rails SaaS in about 15 minutes. Rails 8, PostgreSQL, Minitest, esbuild, membership, seeded orgs, HTML for customers, invoices, subscriptions, cases, and knowledge. That part is real. Screens load. You can sign in.
 
-## What this series is
+Fifteen minutes does not give you a production-grade SaaS. The agent left authorization out. That is a security hole, not a follow-up ticket. This week is the work after the scaffold. The goal is a customer operations desk that could hold an LLM later without leaking one org into another.
 
-I already shipped a RAG chat app once. That was the whole AI story. This time I am going through a 13-week production plan on one Rails product so I can add AI to the next SaaS and know what I am doing.
+## What the agent got right
 
-The product is an AI customer operations desk. Organizations, customers, subscriptions, invoices, support cases, knowledge. The agent comes later. Week 1 is the boring foundation on purpose.
+The domain is an ops desk. An organization has customers, subscriptions, invoices, support cases, and knowledge documents. Two tenants exist from day one. Northwind has Acme Corp. Globex has Acme Inc. Same company name, different org. That fixture is the first security lesson.
 
-Plan: LLMs, tools, RAG again, then deterministic workflows vs agents, human approval, evals, observability, security, and MCP on the same tool registry.
+Tenancy is membership, not `users.organization_id`. A user belongs to many orgs. Role lives on `Membership`. `Session` is identity only. The current tenant is a signed `organization_id` cookie checked against a membership row. Destroying an org destroys memberships, not users.
 
-## 2026-09-03
+Routes stay REST. Front-end JS is esbuild, not importmap. Money is integer cents. The view divides by `100.0` and calls `number_to_currency`.
 
-Generated the Rails SaaS and started tightening it.
+`ruby_llm` is not installed. The rule is already in the repo. When AI work starts, that gem is the only client.
 
-Repo is `ops-desk-ai`. Rails 8, PostgreSQL, Minitest, esbuild. Multi-tenant membership: a user belongs to orgs through `Membership`. Role lives on the membership. Session is identity only. Current tenant is a signed `organization_id` cookie checked against a membership row. Action Policy scopes org-owned records. Default deny on the seven REST actions. HTML coverage is integration tests, not controller tests.
+## What it left out
 
-Seeded two orgs so isolation is real. Alex is Northwind admin and Globex operator. Sam is Globex admin. Acme Corp is Northwind. Acme Inc is Globex. Same company name, different tenant. That fixture is the first security lesson.
+The generate pass had no authorization. Membership and a tenant cookie are identity and context. They do not decide whether this actor may switch org, or load this record. Without a policy check on the record, a signed-in user is one guessed id away from data they should not see. That would have been a production incident, not a polish item.
 
-No `ruby_llm` yet. The rule is already written: when AI work starts, that gem is the only client.
+We added Action Policy after generate, on instruction. Then we tightened it.
 
-### Tests
+The first tests grepped the Gemfile, asserted `enum.keys`, and read migrations. That is not coverage. A test has to name an actor, a starting point, an action, and an observable. Validation errors, persisted rows, HTTP status, copied page text. If the test can pass while the page is wrong, delete it.
 
-Agents hallucinate tests. They grep the Gemfile, assert `enum.keys`, read migrations, and call that coverage. I want outcomes. Actor, starting point, action, observable result. Validation errors, persisted rows, HTTP status, copied page text. One outcome per test so a failure names the broken fact.
+Several HTML controllers had no HTTP tests at all. Dashboard, cases, invoices, subscriptions, and knowledge were missing. Guests could be untested on index while show was covered, or the reverse. Those are two entry points.
 
-Permission checks live in `*_access_integration_test.rb`. Display stays in the resource file. Seeing Acme Corp and not seeing Acme Inc are two tests.
+System tests logged in through the sign-in form on every visit. Slow, and it retested authentication. The session system test is the one place that submits Email and Password. Other system tests plant a signed `session_id` cookie.
 
-I spent a lot of today on that, not on features.
+Knowledge isolation looked covered and was not. Globex docs used the same titles as Northwind, `Refund policy` and `Pricing policy`. The access test asserted Northwind titles and a globex show 404. A leaked index would still have passed. Foreign copied-text on a list has to be unique across tenants, then `count: 0`.
 
-### Rules for the next app
+The agent also wrote currency format tests, visit-only `new` and `edit` tests next to the submit tests, and a guest sign-out test that duplicated logout. Those went away.
 
-Every time I correct a generation mistake, I fix the instance and add a focused `.mdc` under `.cursor/rules/`. One concern per file. Product behavior gets Minitest. Agent process (how to write Rails) gets a Cursor rule. Those files are meant to copy into the SaaS template.
+## What we changed
 
-Today's pile includes: test outcomes, one outcome per test, fixtures `:all`, membership not org-on-user, no non-boolean DB defaults, enum for options, REST routes only, Action Policy default deny and `authorized_scope`, `current_user` not `Current.user` in views, esbuild not importmap, capture corrections, AI on Rails blog log (one file per week goal, `## YYYY-MM-DD` per day).
+The SaaS shape stayed. Authorization became a real layer instead of an assumed one.
 
-The point is not this repo. The point is the next greenfield Rails app starts less stupid.
+`ApplicationPolicy` closes index, show, new, create, edit, update, and destroy. Resource policies open only what they need. Org-owned lists and finds go through `authorized_scope`, not `current_organization.customers`. `authorize :user` in ApplicationController is context wiring, not a resource check. Controllers that mutate call `authorize!` on the record. Association find through `current_user.organizations` is not authorization. Org switch authorizes the `Organization` row with `CurrentOrganizationPolicy`, then remembers the tenant. Policy denial redirects to root with flash `Not authorized`. Tenant isolation through `authorized_scope.find` stays 404. Those failures are different. Do not unify them. Views and controllers call `current_user`, not `Current.user`. `current_organization` stays for the sidebar name and the org switcher.
 
-### Still open
+Every HTML controller now has three files when the rule asks for them. `{resource}_integration_test.rb` is the authorized visit. `{resource}_access_integration_test.rb` is cannot only. `test/system/{resource}_test.rb` uses the Rails generator name. Passwords are public, so they have no access file. Session destroy is `logs out the user`, so there is no session access file. `/up` has integration only.
 
-Week 1 is not done in my head. More tightening tomorrow. Then Week 2: structured case summarization on this data. I especially need to fix tests and define what and how to test current features because AI has added tests for implementation details instead of behavior.
+Index and show stay visit-only. Create and update visit the form and submit in the same test. Show asserts the record and the associated records the page renders. Guest deny is one test per action. Isolation names omit `user`. Unauthenticated actors are `guests`.
 
-Repo will go public. README and release notes as I go. Morning logs in `blog/`.
+CI installs Chrome for system tests.
+
+## Rules that came out of the corrections
+
+Every time a generation mistake got corrected, the instance was fixed and a focused Cursor rule landed under `.cursor/rules/`. One concern per file. Product behavior gets Minitest. Agent process gets an `.mdc` with a failing example and the required shape. The folder is meant to copy into the next greenfield Rails app.
+
+The testing lessons now live in one growing file, `minitest-rails.mdc`. Do not add another test-pattern rule. Access, one edge case, and outcomes still have their own files. Those files must not contradict `minitest-rails.mdc`.
+
+The mistakes that kept coming back:
+
+- generate with no `authorize!` on the record
+- tests that grep source or assert implementation
+- one assertion per test instead of one edge case
+- HTML tests under `test/controllers/`
+- happy path inside an access file
+- association find treated as authz
+- org or role on `User` or `Session`
+- `manage?` as a catch-all
+- non-boolean database defaults
+- frozen `%w` plus `inclusion` instead of `enum`
+- shared titles used to prove tenant exclusion
+
+The catalog is in [`.cursor/rules/README.md`](../.cursor/rules/README.md).
+
+## What you should take to the next app
+
+Generate the SaaS. Then look for `authorize!` before you look at styling. A membership cookie is not a policy.
+
+Seed two orgs and two customers whose names collide on purpose. Write an access test that fails if the list leaks. If the copied text is the same in both tenants, the test is lying.
+
+Do not install an LLM client until the pages, the membership cookie, and the 404 versus `Not authorized` split are boring.
+
+## Next
+
+Week 2 adds structured case summarization on this data. Same tenants. Same cases. Now a model is allowed in the app.
